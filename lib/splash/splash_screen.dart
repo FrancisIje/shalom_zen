@@ -2,16 +2,36 @@ import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  void preloadImages() {
+    // Preloading an asset image
+    precacheImage(const AssetImage('assets/shalom_background2.png'), context);
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Future.delayed(Duration.zero).then((_) {
+      //Your code here
+      preloadImages();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return FlutterSplashScreen.fadeIn(
       asyncNavigationCallback: () async {
-        await Future.delayed(const Duration(seconds: 3));
-        // Navigator.of(context).popAndPushNamed("/onboarding");
+        await Future.delayed(const Duration(seconds: 5));
+        Navigator.of(context).popAndPushNamed("/onboarding");
       },
       backgroundImage: Image.asset("assets/shalom_background2.png"),
 
@@ -29,11 +49,12 @@ class SplashScreen extends StatelessWidget {
           children: [
             Gap(screenSize.height * 0.3),
             SizedBox(
-                height: 100,
-                width: 96,
-                child: Image.asset("assets/shalom_zen_logo.png")),
-            Expanded(child: const Gap(40)),
-            Text(
+              height: 100,
+              width: 96,
+              child: Image.asset("assets/shalom_zen_logo.png"),
+            ),
+            const Expanded(child: Gap(40)),
+            const Text(
               "Shalom Zen",
               textAlign: TextAlign.center,
               style: TextStyle(
