@@ -38,19 +38,22 @@ class OnboardingScreen extends StatelessWidget {
                 ),
               ),
               const Gap(32),
-              ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamedAndRemoveUntil(
-                      "/signin",
-                      (route) => true,
-                    );
-                  },
-                  child: Text(
-                    "Get Started",
-                    style: const TextStyle().copyWith(
-                      color: const Color(0xFF0D1915),
-                    ),
-                  )),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 32),
+                child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamedAndRemoveUntil(
+                        "/signin",
+                        (route) => true,
+                      );
+                    },
+                    child: Text(
+                      "Get Started",
+                      style: const TextStyle().copyWith(
+                        color: const Color(0xFF0D1915),
+                      ),
+                    )),
+              ),
               const Gap(140),
             ],
           )
