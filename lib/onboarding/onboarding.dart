@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:shalom_zen/onboarding/onboarding2.dart';
 
 class OnboardingScreen extends StatelessWidget {
   const OnboardingScreen({super.key});
@@ -42,10 +43,9 @@ class OnboardingScreen extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 32),
                 child: ElevatedButton(
                     onPressed: () {
-                      Navigator.of(context).pushNamedAndRemoveUntil(
-                        "/signin",
-                        (route) => true,
-                      );
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const Onboarding2(),
+                      ));
                     },
                     child: Text(
                       "Get Started",
