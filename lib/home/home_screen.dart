@@ -20,13 +20,31 @@ class _HomeScreenState extends State<HomeScreen> {
       const ProfilePage(),
     ];
     return Scaffold(
-      body: homeScreens[0],
+      body: Stack(
+        children: [
+          SizedBox(
+              height: double.maxFinite,
+              width: double.maxFinite,
+              child: Image.asset(
+                "assets/shalom_background4.png",
+                fit: BoxFit.fill,
+              )),
+          Align(
+              alignment: Alignment.center,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: homeScreens[pageIndex],
+              )),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
           showSelectedLabels: false,
           showUnselectedLabels: false,
           currentIndex: pageIndex,
           onTap: (value) {
-            pageIndex = value;
+            setState(() {
+              pageIndex = value;
+            });
           },
           items: const [
             BottomNavigationBarItem(
