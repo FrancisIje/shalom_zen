@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:shalom_zen/global.dart';
-import 'package:shalom_zen/home/enums/tile_audio_source.dart';
+
+import 'package:shalom_zen/enums/tile_audio_source.dart';
 import 'package:shalom_zen/home/widget/music_tile.dart';
 
 class SoundPage extends StatelessWidget {
@@ -62,12 +61,12 @@ class SoundPage extends StatelessWidget {
             ),
           ),
           const Gap(16),
-          MusicTile(
-              title: "528 Hz",
-              subtitle: "Relax Frequency",
-              audioUrl: "assets/Manifest_Your_Greatness_528hz.mp3",
-              audioSource: TileAudioSource.assets,
-              audioPlayer: appAudioPlayer)
+          const MusicTile(
+            title: "528 Hz",
+            subtitle: "Relax Frequency",
+            audioUrl: "assets/Manifest_Your_Greatness_528hz.mp3",
+            audioSource: TileAudioSource.assets,
+          )
         ],
       ),
     );
