@@ -1,6 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+
 import 'package:gap/gap.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -174,55 +173,53 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     const Gap(8),
                     SizedBox(
                       height: 61,
-                      child: Flexible(
-                        child: TextFormField(
-                          // expands: true,
-                          // maxLines: null,
-                          // minLines: null,
-                          obscureText: isShowPassword,
-                          decoration: InputDecoration(
-                            hintText: '********',
-                            suffixIcon: Padding(
-                              padding: const EdgeInsets.only(right: 12.0),
-                              child: GestureDetector(
-                                  onTap: () {
-                                    setState(() {
-                                      isShowPassword = !isShowPassword;
-                                    });
-                                  },
-                                  child: const Icon(
-                                    Icons.remove_red_eye_outlined,
-                                  )),
-                            ),
-                            prefixIcon: Container(
-                              padding: const EdgeInsets.only(left: 12.0),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  const Icon(Icons.lock),
-                                  const Gap(8),
-                                  const SizedBox(
-                                    height: 61,
-                                  ),
-                                  Container(
-                                    height: 24.0,
-                                    width: 1.0,
-                                    color: Colors.grey,
-                                    margin: const EdgeInsets.symmetric(
-                                        horizontal: 8.0),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            contentPadding: const EdgeInsets.symmetric(
-                                vertical: 16.0, horizontal: 12.0),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(13.0),
-                              borderSide: BorderSide.none,
-                            ),
-                            filled: true,
-                            fillColor: Colors.grey[200],
+                      child: TextFormField(
+                        // expands: true,
+                        // maxLines: null,
+                        // minLines: null,
+                        obscureText: isShowPassword,
+                        decoration: InputDecoration(
+                          hintText: '********',
+                          suffixIcon: Padding(
+                            padding: const EdgeInsets.only(right: 12.0),
+                            child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    isShowPassword = !isShowPassword;
+                                  });
+                                },
+                                child: const Icon(
+                                  Icons.remove_red_eye_outlined,
+                                )),
                           ),
+                          prefixIcon: Container(
+                            padding: const EdgeInsets.only(left: 12.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                const Icon(Icons.lock),
+                                const Gap(8),
+                                const SizedBox(
+                                  height: 61,
+                                ),
+                                Container(
+                                  height: 24.0,
+                                  width: 1.0,
+                                  color: Colors.grey,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                ),
+                              ],
+                            ),
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                              vertical: 16.0, horizontal: 12.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(13.0),
+                            borderSide: BorderSide.none,
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey[200],
                         ),
                       ),
                     ),
@@ -283,7 +280,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     const Gap(32),
                     ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pushNamed("/home_screen");
+                        },
                         child: Text(
                           "Sign Up",
                           style: const TextStyle()

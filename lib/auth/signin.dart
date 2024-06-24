@@ -144,7 +144,12 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                     const Gap(32),
                     ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).pushNamedAndRemoveUntil(
+                            "/home_screen",
+                            (route) => false,
+                          );
+                        },
                         child: Text(
                           "Sign In",
                           style: const TextStyle()
