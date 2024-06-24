@@ -1,25 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:just_audio/just_audio.dart';
-import 'package:shalom_zen/home/enums/tile_audio_source.dart';
+import 'package:shalom_zen/global.dart';
+import 'package:shalom_zen/enums/tile_audio_source.dart';
+import 'package:shalom_zen/player/sound_player.dart';
 
 class MusicTile extends StatelessWidget {
   final String title;
   final String subtitle;
   final String audioUrl;
   final TileAudioSource audioSource;
-  final AudioPlayer audioPlayer;
 
   const MusicTile(
       {super.key,
       required this.title,
       required this.subtitle,
       required this.audioUrl,
-      required this.audioPlayer,
       required this.audioSource});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => SoundPlayer(
+              title: title,
+              subtitle: subtitle,
+              audioUrl: audioUrl,
+              audioSource: audioSource),
+        ));
+      },
       leading: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
@@ -47,8 +55,8 @@ class MusicTile extends StatelessWidget {
       ),
       trailing: FutureBuilder(
           future: audioSource == TileAudioSource.assets
-              ? audioPlayer.setAsset(audioUrl)
-              : audioPlayer.setUrl(audioUrl),
+              ? appAudioPlayer.setAsset(audioUrl)
+              : appAudioPlayer.setUrl(audioUrl),
           builder: (context, snapshot) {
             return Text(
               "${snapshot.data?.inMinutes.toString()} Mins",
