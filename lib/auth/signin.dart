@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:gap/gap.dart';
+import 'package:shalom_zen/services/auth/auth_service.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -11,6 +13,9 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   bool hidePassword = true;
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +52,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     SizedBox(
                       height: 61,
                       child: TextFormField(
+                        controller: emailController,
                         expands: true,
                         minLines: null,
                         maxLines: null,
@@ -94,6 +100,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     SizedBox(
                       height: 61,
                       child: TextFormField(
+                        controller: passwordController,
                         obscureText: hidePassword,
                         decoration: InputDecoration(
                           hintText: '********',
@@ -144,11 +151,28 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                     const Gap(32),
                     ElevatedButton(
-                        onPressed: () {
-                          Navigator.of(context).pushNamedAndRemoveUntil(
-                            "/home_screen",
-                            (route) => false,
-                          );
+                        onPressed: () async {
+                          try {
+                            await AuthService.firebase()
+                                .logIn(
+                              email: emailController.text,
+                              password: passwordController.text,
+                            )
+                                .then((value) {
+                              if (value != null) {
+                                // Check if login was successful
+                                Navigator.of(context).pushNamedAndRemoveUntil(
+                                  "/home_screen",
+                                  (route) => false,
+                                );
+                              }
+                            });
+                          } catch (e) {
+                            Fluttertoast.showToast(
+                              msg: "Login failed: ${e.toString()}",
+                              toastLength: Toast.LENGTH_SHORT,
+                            );
+                          }
                         },
                         child: Text(
                           "Sign In",
