@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shalom_zen/global.dart';
+
+import 'package:just_audio/just_audio.dart';
+
 import 'package:shalom_zen/enums/tile_audio_source.dart';
 import 'package:shalom_zen/player/sound_player.dart';
 
@@ -18,6 +20,13 @@ class MusicTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String formatDuration(Duration duration) {
+      String twoDigits(int n) => n.toString().padLeft(2, '0');
+      String twoDigitMinutes = twoDigits(duration.inMinutes.remainder(60));
+      String twoDigitSeconds = twoDigits(duration.inSeconds.remainder(60));
+      return "$twoDigitMinutes:$twoDigitSeconds";
+    }
+
     return ListTile(
       onTap: () {
         Navigator.of(context).push(MaterialPageRoute(
@@ -55,11 +64,11 @@ class MusicTile extends StatelessWidget {
       ),
       trailing: FutureBuilder(
           future: audioSource == TileAudioSource.assets
-              ? appAudioPlayer.setAsset(audioUrl)
-              : appAudioPlayer.setUrl(audioUrl),
+              ? AudioPlayer().setAsset(audioUrl)
+              : AudioPlayer().setUrl(audioUrl),
           builder: (context, snapshot) {
             return Text(
-              "${snapshot.data?.inMinutes.toString()} Mins",
+              formatDuration(snapshot.data ?? Duration.zero),
               style: const TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w500,
