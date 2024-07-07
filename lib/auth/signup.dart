@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:gap/gap.dart';
 import 'package:shalom_zen/services/auth/auth_service.dart';
+import 'package:shalom_zen/services/database/firebase_cloud_database.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -297,31 +299,53 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const Gap(32),
                       ElevatedButton(
                           onPressed: () async {
-                            if (signUpForm.currentState!.validate()) {
-                              if (passwordController.text ==
-                                      confirmPasswordController.text &&
-                                  passwordController.text.isNotEmpty) {
-                                await AuthService.firebase()
-                                    .createUser(
-                                        email: emailController.text,
-                                        password: passwordController.text)
-                                    .then(
-                                      (value) => Navigator.of(context)
-                                          .pushNamed("/home_screen"),
-                                    );
+                            try {
+                              if (signUpForm.currentState!.validate()) {
+                                if (passwordController.text ==
+                                        confirmPasswordController.text &&
+                                    passwordController.text.isNotEmpty) {
+                                  await AuthService.firebase()
+                                      .createUser(
+                                          email: emailController.text,
+                                          password: passwordController.text)
+                                      .then(
+                                        (value) => FirestoreProvider()
+                                            .createUser(
+                                                email: value.email,
+                                                firstName:
+                                                    firstNameController.text,
+                                                lastName:
+                                                    lastNameController.text,
+                                                password:
+                                                    passwordController.text),
+                                      )
+                                      .then(
+                                        (value) => Navigator.of(context)
+                                            .pushNamed("/home_screen"),
+                                      );
+                                } else {
+                                  Fluttertoast.showToast(
+                                      msg: "Passwords do not match",
+                                      toastLength: Toast.LENGTH_SHORT,
+                                      gravity: ToastGravity.CENTER,
+                                      timeInSecForIosWeb: 1,
+                                      backgroundColor: Colors.teal,
+                                      textColor: Colors.white,
+                                      fontSize: 16.0);
+                                }
                               } else {
                                 Fluttertoast.showToast(
-                                    msg: "Passwords do not match",
-                                    toastLength: Toast.LENGTH_SHORT,
-                                    gravity: ToastGravity.CENTER,
+                                    msg: "Enter all fields",
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.TOP,
                                     timeInSecForIosWeb: 1,
                                     backgroundColor: Colors.teal,
                                     textColor: Colors.white,
                                     fontSize: 16.0);
                               }
-                            } else {
+                            } on FirebaseException catch (e) {
                               Fluttertoast.showToast(
-                                  msg: "Enter all fields",
+                                  msg: e.message ?? "Something went wrong",
                                   toastLength: Toast.LENGTH_LONG,
                                   gravity: ToastGravity.TOP,
                                   timeInSecForIosWeb: 1,
