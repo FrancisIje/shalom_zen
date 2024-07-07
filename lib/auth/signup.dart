@@ -349,7 +349,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   toastLength: Toast.LENGTH_LONG,
                                   gravity: ToastGravity.TOP,
                                   timeInSecForIosWeb: 1,
-                                  backgroundColor: Colors.teal,
+                                  backgroundColor: Colors.red,
                                   textColor: Colors.white,
                                   fontSize: 16.0);
                             }
