@@ -1,14 +1,20 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
 import 'package:shalom_zen/enums/tile_audio_source.dart';
+import 'package:shalom_zen/global.dart';
 import 'package:shalom_zen/home/widget/music_tile.dart';
+import 'package:shalom_zen/player/sound_player.dart';
 
 class SoundPage extends StatelessWidget {
   const SoundPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    var random = Random();
+    int randomNumber = random.nextInt(appFreqSounds.length);
     return SafeArea(
       child: Column(
         children: [
@@ -48,7 +54,19 @@ class SoundPage extends StatelessWidget {
                     style: const ButtonStyle(
                         fixedSize: WidgetStatePropertyAll(Size(125, 40)),
                         backgroundColor: WidgetStatePropertyAll(Colors.white)),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SoundPlayer(
+                            title:
+                                appFreqSounds[randomNumber].entries.single.key,
+                            subtitle: "Relax Frequency",
+                            audioUrl: appFreqSounds[randomNumber]
+                                .entries
+                                .single
+                                .value,
+                            audioSource: TileAudioSource.assets),
+                      ));
+                    },
                     child: const Text(
                       "Play Now",
                       style: TextStyle(
@@ -61,11 +79,16 @@ class SoundPage extends StatelessWidget {
             ),
           ),
           const Gap(16),
-          const MusicTile(
-            title: "528 Hz",
-            subtitle: "Relax Frequency",
-            audioUrl: "assets/Manifest_Your_Greatness_528hz.mp3",
-            audioSource: TileAudioSource.assets,
+          Expanded(
+            child: ListView.builder(
+              itemCount: appFreqSounds.length,
+              itemBuilder: (context, index) => MusicTile(
+                title: appFreqSounds[index].entries.single.key,
+                subtitle: "Relax Frequency",
+                audioUrl: appFreqSounds[index].entries.single.value,
+                audioSource: TileAudioSource.assets,
+              ),
+            ),
           )
         ],
       ),
