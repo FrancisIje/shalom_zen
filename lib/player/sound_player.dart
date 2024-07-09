@@ -98,9 +98,6 @@ class _SoundPlayerState extends State<SoundPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    // if (position != null && duration != null && position == duration) {
-    //   appBackgroundAudioPlayer.pause();
-    // }
     double pitch = appAudioPlayer.pitch;
     double volume = appAudioPlayer.volume;
     return Scaffold(
