@@ -69,7 +69,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   fontSize: 16.0);
                             }
                           },
-                          child: CircleAvatar(
+                          child: const CircleAvatar(
                             radius: 58,
                             backgroundColor: Color(0xFFD7F7A2),
                             child: Icon(
