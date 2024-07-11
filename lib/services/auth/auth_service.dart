@@ -14,7 +14,7 @@ class AuthService implements AuthProvider {
 
   @override
   // TODO: implement currentUser
-  AuthUser? get currentUser => throw UnimplementedError();
+  AuthUser? get currentUser => authProvider.currentUser;
 
   @override
   Future<void> initialize() => authProvider.initialize();
@@ -25,6 +25,9 @@ class AuthService implements AuthProvider {
 
   @override
   Future<void> logOut() => authProvider.logOut();
+
+  @override
+  Future<void> deleteAccount() => authProvider.deleteAccount();
 
   @override
   Future<void> sendEmailVerification() => authProvider.sendEmailVerification();

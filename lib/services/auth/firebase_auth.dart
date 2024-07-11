@@ -39,9 +39,11 @@ class FirebaseAuthProvider implements AuthProvider {
       } else if (e.code == 'invalid-email') {
         throw InvalidEmailAuthException();
       } else {
+        print(e);
         throw GenericAuthException();
       }
     } catch (_) {
+      print(_);
       throw GenericAuthException();
     }
   }
@@ -78,9 +80,11 @@ class FirebaseAuthProvider implements AuthProvider {
       } else if (e.code == 'wrong-password') {
         throw WrongPasswordAuthException();
       } else {
+        print(e);
         throw GenericAuthException();
       }
     } catch (_) {
+      print(_);
       throw GenericAuthException();
     }
   }
@@ -90,6 +94,16 @@ class FirebaseAuthProvider implements AuthProvider {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null) {
       await FirebaseAuth.instance.signOut();
+    } else {
+      throw UserNotLoggedInAuthException();
+    }
+  }
+
+  @override
+  Future<void> deleteAccount() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      await FirebaseAuth.instance.currentUser!.delete();
     } else {
       throw UserNotLoggedInAuthException();
     }
