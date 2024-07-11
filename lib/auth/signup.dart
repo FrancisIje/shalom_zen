@@ -1,9 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:gap/gap.dart';
+import 'package:shalom_zen/services/auth/auth_exceptions.dart';
 import 'package:shalom_zen/services/auth/auth_service.dart';
 import 'package:shalom_zen/services/database/firebase_cloud_database.dart';
 
@@ -21,8 +21,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
   GlobalKey<FormState> signUpForm = GlobalKey();
-  bool isShowPassword = false;
-  bool isShowConfirmPassword = false;
+  bool isShowPassword = true;
+  bool isShowConfirmPassword = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -250,7 +250,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         height: 61,
                         child: TextFormField(
                           controller: confirmPasswordController,
-                          obscureText: true,
+                          obscureText: isShowConfirmPassword,
                           decoration: InputDecoration(
                             hintText: '********',
                             suffixIcon: Padding(
@@ -343,15 +343,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     textColor: Colors.white,
                                     fontSize: 16.0);
                               }
-                            } on FirebaseException catch (e) {
-                              Fluttertoast.showToast(
-                                  msg: e.message ?? "Something went wrong",
-                                  toastLength: Toast.LENGTH_LONG,
-                                  gravity: ToastGravity.TOP,
-                                  timeInSecForIosWeb: 1,
-                                  backgroundColor: Colors.red,
-                                  textColor: Colors.white,
-                                  fontSize: 16.0);
+                            } catch (e) {
+                              if (e.runtimeType == WeakPasswordAuthException) {
+                                Fluttertoast.showToast(
+                                    msg: (e as WeakPasswordAuthException).msg,
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.TOP,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              } else if (e.runtimeType ==
+                                  EmailAlreadyInUseAuthException) {
+                                Fluttertoast.showToast(
+                                    msg: (e as EmailAlreadyInUseAuthException)
+                                        .msg,
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.TOP,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              } else if (e.runtimeType ==
+                                  InvalidEmailAuthException) {
+                                Fluttertoast.showToast(
+                                    msg: (e as InvalidEmailAuthException).msg,
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.TOP,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              } else {
+                                Fluttertoast.showToast(
+                                    msg: e.toString(),
+                                    toastLength: Toast.LENGTH_LONG,
+                                    gravity: ToastGravity.TOP,
+                                    timeInSecForIosWeb: 1,
+                                    backgroundColor: Colors.red,
+                                    textColor: Colors.white,
+                                    fontSize: 16.0);
+                              }
                             }
                           },
                           child: Text(

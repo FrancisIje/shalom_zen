@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:gap/gap.dart';
+import 'package:shalom_zen/services/auth/auth_exceptions.dart';
 import 'package:shalom_zen/services/auth/auth_service.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -168,10 +169,35 @@ class _SignInScreenState extends State<SignInScreen> {
                               }
                             });
                           } catch (e) {
-                            Fluttertoast.showToast(
-                              msg: "Login failed: ${e.toString()}",
-                              toastLength: Toast.LENGTH_SHORT,
-                            );
+                            if (e.runtimeType == UserNotFoundAuthException) {
+                              Fluttertoast.showToast(
+                                  msg: (e as UserNotFoundAuthException).msg,
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.TOP,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            } else if (e.runtimeType ==
+                                WrongPasswordAuthException) {
+                              Fluttertoast.showToast(
+                                  msg: (e as WrongPasswordAuthException).msg,
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.TOP,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            } else {
+                              Fluttertoast.showToast(
+                                  msg: e.toString(),
+                                  toastLength: Toast.LENGTH_LONG,
+                                  gravity: ToastGravity.TOP,
+                                  timeInSecForIosWeb: 1,
+                                  backgroundColor: Colors.red,
+                                  textColor: Colors.white,
+                                  fontSize: 16.0);
+                            }
                           }
                         },
                         child: Text(
