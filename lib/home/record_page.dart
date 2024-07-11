@@ -128,7 +128,8 @@ class _RecordPage extends State<RecordPage> {
   @override
   void dispose() {
     // TODO: implement dispose
-    stopRecorder();
+    appAudioRecorder.stop();
+    appAudioRecorder.dispose();
     title.dispose();
 
     super.dispose();
