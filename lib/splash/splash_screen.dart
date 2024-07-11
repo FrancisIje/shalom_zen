@@ -1,4 +1,5 @@
 import 'package:another_flutter_splash_screen/another_flutter_splash_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 
@@ -19,10 +20,8 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    Future.delayed(Duration.zero).then((_) {
-      //Your code here
-      preloadImages();
-    });
+
+    preloadImages();
   }
 
   @override
@@ -31,7 +30,12 @@ class _SplashScreenState extends State<SplashScreen> {
     return FlutterSplashScreen.fadeIn(
       asyncNavigationCallback: () async {
         await Future.delayed(const Duration(seconds: 5));
-        Navigator.of(context).popAndPushNamed("/onboarding");
+
+        if (FirebaseAuth.instance.currentUser == null) {
+          Navigator.of(context).popAndPushNamed("/onboarding");
+        } else {
+          Navigator.of(context).popAndPushNamed("/home_screen");
+        }
       },
       backgroundImage: Image.asset("assets/shalom_background2.png"),
 
