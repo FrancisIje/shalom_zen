@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:shalom_zen/enums/tile_audio_source.dart';
+import 'package:shalom_zen/home/record_page.dart';
+import 'package:shalom_zen/home/widget/music_tile.dart';
+import 'package:shalom_zen/models/user_recordings.dart';
 import 'package:shalom_zen/player/sound_player.dart';
+import 'package:shalom_zen/services/database/firebase_cloud_database.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -73,7 +77,7 @@ class HomePage extends StatelessWidget {
                             fontSize: 24,
                             color: Color(0xFF0D1915)),
                       ),
-                      Expanded(child: const Gap(2)),
+                      const Expanded(child: Gap(2)),
                       Row(
                         children: [
                           const Text(
@@ -84,7 +88,7 @@ class HomePage extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 color: Colors.black),
                           ),
-                          Expanded(child: const Gap(16)),
+                          const Expanded(child: Gap(16)),
                           Container(
                               height: 70,
                               width: MediaQuery.of(context).size.width * 0.1,
@@ -103,7 +107,11 @@ class HomePage extends StatelessWidget {
                 ),
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const RecordPage(),
+                  ));
+                },
                 child: Container(
                   width: MediaQuery.of(context).size.width * 0.44,
                   height: 200,
@@ -125,7 +133,7 @@ class HomePage extends StatelessWidget {
                             fontSize: 24,
                             color: Colors.white),
                       ),
-                      Expanded(child: const Gap(2)),
+                      const Expanded(child: Gap(2)),
                       Row(
                         children: [
                           const Text(
@@ -153,7 +161,7 @@ class HomePage extends StatelessWidget {
             ],
           ),
           const Gap(16),
-          Text(
+          const Text(
             "Browse Recordings",
             style: TextStyle(
                 fontSize: 27,
@@ -161,42 +169,25 @@ class HomePage extends StatelessWidget {
                 fontFamily: "Aeonik",
                 color: Colors.white),
           ),
-          Gap(16),
-          ListTile(
-            leading: Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/sound_image.jpeg"),
-                    fit: BoxFit.cover),
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-              ),
-              width: 70,
-              height: 65,
-            ),
-            title: Text(
-              "Recording 1",
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: "Aeonik",
-                  color: Colors.white),
-            ),
-            subtitle: Text(
-              "Mantra",
-              style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: "Aeonik",
-                  color: Colors.white.withOpacity(0.5)),
-            ),
-            trailing: Text(
-              "10 Mins",
-              style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: "Aeonik",
-                  color: Colors.white),
-            ),
+          const Gap(16),
+          StreamBuilder(
+            stream: FirestoreProvider().getRecordingsStream(),
+            builder: (context, snapshot) {
+              List<UserRecordings> recordings = snapshot.data ?? [];
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: recordings.length,
+                  itemBuilder: (context, index) {
+                    var eachRecording = recordings[index];
+                    return MusicTile(
+                        title: eachRecording.title,
+                        subtitle: "Mantra",
+                        audioUrl: eachRecording.downnloadUrl,
+                        audioSource: TileAudioSource.url);
+                  },
+                ),
+              );
+            },
           )
         ],
       ),
